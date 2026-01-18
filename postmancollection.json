@@ -1,0 +1,127 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Smart Summary / Analysis API",
+    "version": "1.0.0",
+    "description": "API documentation for Analysis Service"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Local server"
+    }
+  ],
+  "paths": {
+    "/api/analyze": {
+      "post": {
+        "summary": "Perform synchronous analysis",
+        "tags": [
+          "Analysis"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "structured_data"
+                ],
+                "properties": {
+                  "structured_data": {
+                    "type": "object",
+                    "example": {
+                      "title": "Quarterly Report",
+                      "revenue": 120000
+                    }
+                  },
+                  "notes": {
+                    "type": "string",
+                    "example": "Focus on growth trends"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Analysis completed successfully"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/api/analyze/async": {
+      "post": {
+        "summary": "Submit asynchronous analysis job",
+        "tags": [
+          "Analysis"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "structured_data"
+                ],
+                "properties": {
+                  "structured_data": {
+                    "type": "object"
+                  },
+                  "notes": {
+                    "type": "string"
+                  },
+                  "webhook_url": {
+                    "type": "string",
+                    "example": "https://example.com/webhook"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Analysis job accepted"
+          }
+        }
+      }
+    },
+    "/api/analyze/status/{jobId}": {
+      "get": {
+        "summary": "Get async analysis job status",
+        "tags": [
+          "Analysis"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "jobId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Analysis job ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Job status retrieved"
+          },
+          "404": {
+            "description": "Job not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+
+  },
+  "tags": []
+}

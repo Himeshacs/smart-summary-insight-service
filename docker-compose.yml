@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+    container_name: smart-summary-app
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+      - ./logs:/usr/src/app/logs
+    depends_on:
+      - redis
+    command: npm run dev
+
+  redis:
+    image: redis:7-alpine
+    container_name: smart-summary-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+
+volumes:
+  redis_data:
